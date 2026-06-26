@@ -1,6 +1,6 @@
 CREATE TABLE [dbo].[Account](
 	[AccountId] [integer]  IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](55)  NULL,
+	[Name] [varchar](50)  NULL,
 	[isActive] [bit] NOT NULL CONSTRAINT DFAccountisActive DEFAULT(1),
 	[Bank] [varchar](50)  NULL,
  CONSTRAINT [PKAccount] PRIMARY KEY CLUSTERED ([AccountId] ASC)
