@@ -23,4 +23,5 @@ WHEN NOT MATCHED THEN
 	VALUES (source.AuthRepRelationshipId, source.Description);
 
 SET IDENTITY_INSERT [dbo].[AuthRepRelationship] OFF;
+
 go
