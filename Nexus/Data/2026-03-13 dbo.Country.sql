@@ -1,4 +1,3 @@
-PRINT N'Filling table Country';
 
 MERGE INTO [dbo].[Country] AS c
 USING (
@@ -257,3 +256,4 @@ ON i.CountryCode = c.CountryCode
 WHEN NOT MATCHED THEN
 	INSERT (CountryCode, Name, ISO2)
 	VALUES (i.CountryCode, i.CountryName, i.ISO2Code);
+	go

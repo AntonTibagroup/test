@@ -2,7 +2,7 @@
 
 CREATE TABLE [dbo].[Country](
 [CountryCode] [char](3) NOT NULL,
-[Name] [varchar](70) NULL,
+[Name] [varchar](75) NULL,
 [ISO2] [char](2) NULL,
 CONSTRAINT [PKcountry] PRIMARY KEY CLUSTERED ([CountryCode])
 )
