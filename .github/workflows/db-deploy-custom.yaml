@@ -23,11 +23,12 @@ jobs:
       - name: Setup NuGet
         uses: nuget/setup-nuget@v1
 
-      # Шаг 4: Восстанавливаем зависимости решения перед сборкой
+       # Шаг 4: Восстанавливаем зависимости решения перед сборкой (указываем правильный путь к подпапке)
       - name: Restore NuGet packages
-        run: nuget restore Nexus.slnx
+        run: nuget restore Nexus/Nexus.slnx
 
-      # Шаг 5: Компилируем базу данных и публикуем её
+      # Шаг 5: Компилируем базу данных и публикуем её (указываем путь к решению)
       - name: Build and Publish SSDT Project
         run: |
-          msbuild /t:Build,Publish /p:SqlPublishProfilePath=Nexus.publish.xml /p:Configuration=Release
+          msbuild Nexus/Nexus.slnx /t:Build,Publish /p:SqlPublishProfilePath=Nexus/Nexus.publish.xml /p:Configuration=Release
+
