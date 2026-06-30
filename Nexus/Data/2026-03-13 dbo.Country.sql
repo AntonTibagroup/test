@@ -3,7 +3,7 @@ MERGE INTO [dbo].[Country] AS c
 USING (
 	VALUES 
 		('USA', 'United States of America', 'US'),
-		('AFG', 'Afghanistan', 'AF'),
+	
 		('ALB', 'Albania', 'AL'),
 		('DZA', 'Algeria', 'DZ'),
 		('ASM', 'American Samoa', 'AS'),

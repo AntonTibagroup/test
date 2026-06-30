@@ -3,7 +3,6 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ new ] # Триггер на главную ветку
-  tag:
     tags: [ 'v*' ] # Или триггер на релизные теги (например, v1.0.0)
 
 jobs:
