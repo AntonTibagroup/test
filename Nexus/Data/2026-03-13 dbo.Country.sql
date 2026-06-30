@@ -4,7 +4,7 @@ USING (
 	VALUES 
 		('USA', 'United States of America', 'US'),
 	
-		('ALB', 'Albania', 'AL'),
+		
 		('DZA', 'Algeria', 'DZ'),
 		('ASM', 'American Samoa', 'AS'),
 		('AND', 'Andorra', 'AD'),
