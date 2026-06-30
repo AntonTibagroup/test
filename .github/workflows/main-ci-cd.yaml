@@ -13,7 +13,7 @@ jobs:
       environment: qa
     secrets: inherit # Передает секреты в reusable workflow
 
-  # Деплой на TEST запускается автоматически после успешного DEV
+  # Деплой на TEST запускается автоматически после успешного DEV d
   # deploy-test:
     # needs: deploy-dev
     # uses: ./.github/workflows/deployment-template.yml
