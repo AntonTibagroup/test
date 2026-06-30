@@ -9,7 +9,7 @@ USING (
 		('ASM', 'American Samoa', 'AS'),
 		('AND', 'Andorra', 'AD'),
 		('AGO', 'Angola', 'AO'),
-		('AIA', 'Anguilla', 'AI'),
+		
 		('ATA', 'Antarctica', 'AQ'),
 		('ATG', 'Antigua and Barbuda', 'AG'),
 		('ARG', 'Argentina', 'AR'),
