@@ -8,3 +8,4 @@ when not matched then
 	insert  (GenderCode,Name) 
 	values (i.GenderCode,i.Name);
 	go
+	

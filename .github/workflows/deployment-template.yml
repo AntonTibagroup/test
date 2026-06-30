@@ -1,0 +1,27 @@
+name: Shared Deployment Target
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Связываем джобу с конкретным окружением в GitHub Settings
+    environment: ${{ inputs.environment }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: echo "Building image for ${{ inputs.environment }}..."
+
+      - name: Deploy to Server
+        run: |
+          echo "Connecting to database..."
+          # GitHub автоматически подставит секрет из настроек выбранного окружения
+          echo "Using connection string: ${{ secrets.DATABASE_URL }}"
