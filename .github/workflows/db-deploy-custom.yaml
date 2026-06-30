@@ -2,7 +2,7 @@ name: Deploy SSDT Database Custom
 
 on:
   push:
-    branches: [ "master", "main" ]
+    branches: [ "master", "main", "new" ]
     paths:
       - 'Nexus/**' 
   workflow_dispatch:
@@ -31,5 +31,6 @@ jobs:
 
       # Шаг 5: Компилируем базу данных и публикуем её (исправлен путь к профилю публикации)
       - name: Build and Publish SSDT Project
+        working-directory: ./Nexus
         run: |
-          msbuild Nexus/Nexus.slnx /t:Build,Publish /p:SqlPublishProfilePath=Nexus.publish.xml /p:Configuration=Release
+          msbuild Nexus.slnx /t:Build,Publish /p:SqlPublishProfilePath=Nexus.publish.xml /p:Configuration=Release

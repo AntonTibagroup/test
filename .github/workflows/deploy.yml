@@ -1,0 +1,19 @@
+name: Test Self-Hosted Runner
+
+on:
+  push:
+    branches: [ "master", "main" ] # запускать при пуше в master или main
+
+jobs:
+  test-job:
+    # КРИТИЧЕСКИ ВАЖНАЯ СТРОКА: указывает использовать ваш воркер
+    runs-on: self-hosted 
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Run a diagnostic command
+        run: |
+          echo "Привет! Этот скрипт выполняется на моем собственном сервере!"
+          hostname
