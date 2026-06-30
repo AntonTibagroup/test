@@ -3,6 +3,8 @@ name: Deploy SSDT Database Custom
 on:
   push:
     branches: [ "master", "main" ]
+    paths:
+      - 'Nexus/**' 
   workflow_dispatch:
 
 jobs:

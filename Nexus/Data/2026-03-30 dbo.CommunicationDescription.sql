@@ -1,25 +1,31 @@
 PRINT N'Filling table CommunicationDescription';
-INSERT INTO CommunicationDescription (Description)
-Values ('Dependent Form Request')
+delete CommunicationDescription;
+go
+SET IDENTITY_INSERT [dbo].CommunicationDescription ON;
 go
 INSERT INTO CommunicationDescription (Description)
-Values ('Checklist of Understanding Request')
+Values (1,'Dependent Form Request')
 go
-INSERT INTO CommunicationDescription (Description)
-Values ('Sharing Form Request')
+INSERT INTO CommunicationDescription (CommunicationDescriptionId,Description)
+Values (2,'Checklist of Understanding Request')
 go
-INSERT INTO CommunicationDescription (Description)
-Values ('Letter of Explanation Request')
+INSERT INTO CommunicationDescription (CommunicationDescriptionId,Description)
+Values (3,'Sharing Form Request')
 go
-INSERT INTO CommunicationDescription (Description)
-Values ('Medical Record Request')
+INSERT INTO CommunicationDescription (CommunicationDescriptionId,Description)
+Values (4,'Letter of Explanation Request')
 go
-INSERT INTO CommunicationDescription (Description)
-Values ('HIPAA Form Request')
+INSERT INTO CommunicationDescription (CommunicationDescriptionId,Description)
+Values (5,'Medical Record Request')
 go
-INSERT INTO CommunicationDescription (Description)
-Values ('Itemized Bill Request')
+INSERT INTO CommunicationDescription (CommunicationDescriptionId,Description)
+Values (6,'HIPAA Form Request')
 go
-INSERT INTO CommunicationDescription (Description)
-Values ('Medicare Summary Request')
+INSERT INTO CommunicationDescription (CommunicationDescriptionId,Description)
+Values (7,'Itemized Bill Request')
+go
+INSERT INTO CommunicationDescription (CommunicationDescriptionId,Description)
+Values (8,'Medicare Summary Request')
+go
+SET IDENTITY_INSERT [dbo].CommunicationDescription OFF;
 go

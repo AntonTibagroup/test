@@ -1,3 +1,4 @@
+
 CREATE TABLE [dbo].[Account](
 	[AccountId] [integer]  IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50)  NULL,

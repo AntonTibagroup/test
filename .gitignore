@@ -1,4 +1,45 @@
-Nexus/Nexus.sqlproj.user
-Nexus/bin
-Nexus/obj
-Nexus/.vs
+################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+.vs/
+*.wsuo
+*.bin
+workspaceFileList.json
+VSW*
+.project
+
+
+################################################################################
+# Nexus project only
+################################################################################
+
+# Visual Studio (только внутри Nexus)
+Nexus/.vs/
+Nexus/*.user
+Nexus/*.suo
+
+# Build results
+Nexus/bin/
+Nexus/obj/
+Nexus/**/bin/
+Nexus/**/obj/
+
+# SSDT / SQL project
+Nexus/*.dbmdl
+Nexus/*.jfm
+Nexus/*.pdb
+Nexus/*.sqlproj.user
+
+# DACPAC / BACPAC
+Nexus/*.dacpac
+Nexus/*.bacpac
+
+# Publish profiles
+Nexus/*.publish.xml
+Nexus/*.publishsettings
+
+# Logs
+Nexus/*.log
+
+
