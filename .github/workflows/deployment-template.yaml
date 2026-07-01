@@ -35,7 +35,12 @@ jobs:
         working-directory: Nexus
         shell: pwsh
         run: |
-          SqlPackage `
+            $sqlpackage = "C:\Program Files\Microsoft Visual Studio\18\Insiders\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\SqlPackage.exe"
+            if (-not (Test-Path $sqlpackage)) {
+                Write-Error "SqlPackage not found"
+                exit 1
+            }
+            & $sqlpackage `
             /Action:Publish `
             /SourceFile:"bin\Release\Nexus.dacpac" `
             /TargetServerName:"${{ vars.DB_SERVER }}" `
