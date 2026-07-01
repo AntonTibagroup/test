@@ -1,0 +1,85 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ] # Триггер на главную ветку
+    tags: [ 'v*' ] # Или триггер на релизные теги (например, v1.0.0)
+  pull_request:
+    branches: [ main ]   # Открытие или обновление Pull Request в ветку main
+    types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
+
+
+jobs:
+  # =========================================================================
+  # 1.  PULL REQUEST (test on dev db)
+  # =========================================================================
+  # IMPORTANT: jobs name (build-template) should be added in Branch Protection Rules.
+  build-template:
+    if: github.event_name == 'pull_request'
+    #if: github.event_name == 'push' && github.ref_name == 'new'
+    uses: ./.github/workflows/deployment-template.yaml
+    with:
+      environment: dev
+      action_type: build_template
+    secrets: inherit
+    
+  # Бот пишет статус деплоя текстом прямо в комментарии Пул Реквеста
+  comment-pr:
+    needs: build-template
+    if: github.event_name == 'pull_request' && always()
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Post Success Comment
+        if: needs.build-template.result == 'success'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          number: ${{ github.event.pull_request.number }}
+          header: ssdt-status
+          message: "### ✅  SSDT validation passed!"
+
+      - name: Post Failure Comment
+        if: needs.build-template.result != 'success'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          number: ${{ github.event.pull_request.number }}
+          header: ssdt-status
+          message: "### ❌ SSDT validation failed. Merge rejected"
+    
+    
+  # deploy-dev on push in main
+  deploy-dev:
+    needs: build-template
+    uses: ./.github/workflows/deployment-template.yaml
+    with:
+      environment: dev
+      action_type: dev_deploy
+    secrets: inherit # Передает секреты в reusable workflow
+
+  # Деплой на TEST запускается автоматически после успешного DEV d
+  deploy-test:
+    needs: deploy-dev
+    uses: ./.github/workflows/deployment-template.yaml
+    with:
+      environment: qa
+      action_type: qa_deploy
+    secrets: inherit
+    
+   # Деплой на TEST запускается автоматически после успешного DEV d
+  deploy-staging:
+    needs: deploy-dev
+    uses: ./.github/workflows/deployment-template.yaml
+    with:
+      environment: staging
+      action_type: staging_deploy
+    secrets: inherit
+
+  # Деплой на PROD запускается только при создании тега (релиза)
+  # deploy-prod:
+    # if: startsWith(github.ref, 'refs/tags/')
+    # uses: ./.github/workflows/deployment-template.yaml
+    # with:
+      # environment: production
+    # secrets: inherit

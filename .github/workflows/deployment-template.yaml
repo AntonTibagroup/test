@@ -1,0 +1,91 @@
+name: Deployment Template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      action_type:
+        required: false
+        type: string
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout code
+        if: inputs.action_type == 'build_template'
+        uses: actions/checkout@v4
+
+      - name: Environment check
+        if: always()
+        run: |
+          echo "ENV_NAME  ${{ inputs.environment }}"
+          echo "DB_SERVER ${{ vars.DB_SERVER }}"
+          echo "DB_NAME   ${{ vars.DB_NAME }}"
+          echo "Current user: $(whoami)"
+
+
+      # - name: Setup MSBuild
+        # uses: microsoft/setup-msbuild@v2
+
+      - name: Build SSDT Project (.sqlproj)
+        if: inputs.action_type == 'build_template'
+        working-directory: Nexus
+        run: |
+          msbuild `
+          /t:Build `
+          /p:Configuration=Release Nexus.sqlproj `
+          /fileLogger `
+          "/fileLoggerParameters:LogFile=bin\Release\build.log;Verbosity=minimal"
+
+      
+      - name: Upload dacpac
+        if: inputs.action_type == 'build_template'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dacpac
+          path: Nexus/bin/Release/Nexus.dacpac
+            
+      - name: Download dacpac
+        #if: contains(fromJSON('["dev_deploy","qa_deploy"]'), inputs.action_type)
+        if: endsWith(inputs.action_type, '_deploy')
+        uses: actions/download-artifact@v4
+        with:
+          name: dacpac
+          path: Nexus/bin/Release
+
+      - name: Publish dacpac structure to Remote DB
+        #if: contains(fromJSON('["dev_deploy","qa_deploy"]'), inputs.action_type)
+        if: endsWith(inputs.action_type, '_deploy')
+        working-directory: Nexus
+        shell: pwsh
+        run: |
+            $sqlpackage = "C:\Program Files\Microsoft Visual Studio\18\Insiders\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\SqlPackage.exe"
+            if (-not (Test-Path $sqlpackage)) {
+                Write-Error "SqlPackage not found"
+                exit 1
+            }
+            
+            & $sqlpackage `
+            /Action:Publish `
+            /SourceFile:"bin\Release\Nexus.dacpac" `
+            /TargetConnectionString:"Server=${{ vars.DB_SERVER }};Database=${{ vars.DB_NAME }};Integrated Security=True;TrustServerCertificate=True" `
+            /DiagnosticsFile:"bin\Release\publish.log" `
+            /p:BlockOnPossibleDataLoss=True `
+            /p:DropObjectsNotInSource=False
+            
+
+      - name: Debug artifacts
+        if: always()
+        run: dir Nexus\bin\Release
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: debug
+          path: Nexus/bin/Release

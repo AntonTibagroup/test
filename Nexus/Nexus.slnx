@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="Nexus.sqlproj" Id="a92d43c4-259f-4b38-997e-f84b12cabfa8">
+  <Project Path="Nexus.sqlproj">
     <Build />
     <Deploy />
   </Project>

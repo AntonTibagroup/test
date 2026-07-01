@@ -3,7 +3,7 @@ delete CommunicationDescription;
 go
 SET IDENTITY_INSERT [dbo].CommunicationDescription ON;
 go
-INSERT INTO CommunicationDescription (Description)
+INSERT INTO CommunicationDescription (CommunicationDescriptionId,Description)
 Values (1,'Dependent Form Request')
 go
 INSERT INTO CommunicationDescription (CommunicationDescriptionId,Description)
