@@ -27,10 +27,12 @@ jobs:
         # uses: microsoft/setup-msbuild@v2
 
       - name: Build SSDT Project (.sqlproj)
+        working-directory: Nexus
         run: |
           msbuild /t:Build /p:Configuration=Release Nexus.sqlproj
 
       - name: Publish dacpac structure to Remote Template DB
+        working-directory: Nexus
         shell: pwsh
         run: |
           SqlPackage `
