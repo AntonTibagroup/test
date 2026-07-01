@@ -15,8 +15,10 @@ jobs:
   # 1.  PULL REQUEST (test on dev db)
   # =========================================================================
   # IMPORTANT: jobs name (build-template) should be added in Branch Protection Rules.
-  build-template:
-    if: github.event_name == 'pull_request'
+  build-template: 
+    if: ${{ github.event_name == 'pull_request' 
+            || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
+
     #if: github.event_name == 'push' && github.ref_name == 'new'
     uses: ./.github/workflows/deployment-template.yaml
     with:
@@ -65,7 +67,7 @@ jobs:
   # Деплой на TEST запускается автоматически после успешного DEV d
   deploy-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    #needs: deploy-dev
+    needs: build-template
     uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: qa
@@ -75,7 +77,7 @@ jobs:
    # Деплой на TEST запускается автоматически после успешного DEV d
   deploy-staging:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    #needs: deploy-dev
+    needs: deploy-test
     uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: staging

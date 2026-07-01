@@ -83,9 +83,17 @@ jobs:
       - name: Debug artifacts
         if: always()
         run: dir Nexus\bin\Release
+      
+      - name: Rename publish log
+        if: endsWith(inputs.action_type, '_deploy')
+        shell: pwsh
+        run: |
+          Move-Item `
+            Nexus/bin/Release/publish.log `
+            "Nexus/bin/Release/publish-${{ inputs.environment }}.log"
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: debug
-          path: Nexus/bin/Release
+          name: debug_${{ inputs.environment }}
+          path: Nexus/bin/Release/*.log
