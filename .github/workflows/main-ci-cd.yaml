@@ -60,6 +60,7 @@ jobs:
 
   # Деплой на TEST запускается автоматически после успешного DEV d
   deploy-test:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: deploy-dev
     uses: ./.github/workflows/deployment-template.yaml
     with:
@@ -69,6 +70,7 @@ jobs:
     
    # Деплой на TEST запускается автоматически после успешного DEV d
   deploy-staging:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: deploy-dev
     uses: ./.github/workflows/deployment-template.yaml
     with:
@@ -78,8 +80,10 @@ jobs:
 
   # Деплой на PROD запускается только при создании тега (релиза)
   # deploy-prod:
+    # needs: deploy-staging
     # if: startsWith(github.ref, 'refs/tags/')
     # uses: ./.github/workflows/deployment-template.yaml
     # with:
       # environment: production
+      # action_type: prod_deploy
     # secrets: inherit
