@@ -39,6 +39,7 @@ jobs:
           number: ${{ github.event.pull_request.number }}
           header: ssdt-status
           message: "### ✅  SSDT validation passed!"
+          
 
       - name: Post Failure Comment
         if: needs.build-template.result != 'success'
@@ -46,7 +47,10 @@ jobs:
         with:
           number: ${{ github.event.pull_request.number }}
           header: ssdt-status
-          message: "### ❌ SSDT validation failed. Merge rejected"
+          message: |
+            ### ❌ SSDT validation failed. Merge rejected
+            🔗 [Open pipeline](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
     
     
   # deploy-dev on push in main
@@ -57,29 +61,6 @@ jobs:
       environment: dev
       action_type: dev_deploy
     secrets: inherit # Передает секреты в reusable workflow
-    
-  comment-pr:
-    needs: build-template
-    if: github.event_name == 'pull_request' && always()
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-    steps:
-      - name: Post Success Comment
-        if: needs.build-template.result == 'success'
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          number: ${{ github.event.pull_request.number }}
-          header: ssdt-status
-          message: "### ✅  SSDT validation passed!"
-
-      - name: Post Failure Comment
-        if: needs.build-template.result != 'success'
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          number: ${{ github.event.pull_request.number }}
-          header: ssdt-status
-          message: "### ❌ SSDT validation failed. Merge rejected"
 
   # Деплой на TEST запускается автоматически после успешного DEV d
   deploy-test:
