@@ -27,6 +27,7 @@ jobs:
           echo "ENV_NAME  ${{ inputs.environment }}"
           echo "DB_SERVER ${{ vars.DB_SERVER }}"
           echo "DB_NAME   ${{ vars.DB_NAME }}"
+          echo "Current user: $(whoami)"
 
 
       # - name: Setup MSBuild
@@ -87,4 +88,4 @@ jobs:
         if: always()
         with:
           name: debug
-          path: Nexus/bin/Release/*.log
+          path: Nexus/bin/Release
