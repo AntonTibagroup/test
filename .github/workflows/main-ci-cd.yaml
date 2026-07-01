@@ -8,6 +8,7 @@ on:
 jobs:
   # Деплой на DEV происходит всегда при пуше в main
   deploy-dev:
+    name: Local deployment
     uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: qa
