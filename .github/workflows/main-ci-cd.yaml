@@ -11,16 +11,16 @@ jobs:
     name: Local
     uses: ./.github/workflows/deployment-template.yaml
     with:
-      environment: qa
+      environment: dev
     secrets: inherit # Передает секреты в reusable workflow
 
   # Деплой на TEST запускается автоматически после успешного DEV d
-  # deploy-test:
-    # needs: deploy-dev
-    # uses: ./.github/workflows/deployment-template.yml
-    # with:
-      # environment: staging
-    # secrets: inherit
+  deploy-test:
+    needs: deploy-dev
+    uses: ./.github/workflows/deployment-template.yml
+    with:
+      environment: qa
+    secrets: inherit
 
   # Деплой на PROD запускается только при создании тега (релиза)
   # deploy-prod:
