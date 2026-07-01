@@ -45,7 +45,6 @@ jobs:
             /SourceFile:"bin\Release\Nexus.dacpac" `
             /TargetServerName:"${{ vars.DB_SERVER }}" `
             /TargetDatabaseName:"${{ vars.DB_NAME }}" `
-            /TargetTrustedConnection:True `
             /p:AllowDropBlockingDatabaseObjects=True `
             /p:BlockOnPossibleDataLoss=True `
             /p:DropObjectsNotInSource=False
