@@ -6,9 +6,9 @@ on:
     tags: [ 'v*' ] # Или триггер на релизные теги (например, v1.0.0)
 
 jobs:
-  # Деплой на DEV происходит всегда при пуше в main
+  # deploy-dev on push in main
   deploy-dev:
-    name: Local deployment
+    name: Local
     uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: qa
