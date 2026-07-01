@@ -73,7 +73,7 @@ jobs:
                 /p:DropObjectsNotInSource=False
             catch {
                 Write-Host "ERROR OCCURRED"
-                throw
+                throw 
             }
 
       
