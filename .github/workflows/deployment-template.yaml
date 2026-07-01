@@ -43,7 +43,6 @@ jobs:
             & $sqlpackage `
             /Action:Publish `
             /SourceFile:"bin\Release\Nexus.dacpac" `
-            /TargetServerName:"${{ vars.DB_SERVER }}" `
-            /TargetDatabaseName:"${{ vars.DB_NAME }}" `
+            /TargetConnectionString:"Server=${{ vars.DB_SERVER }};Database=${{ vars.DB_NAME }};Integrated Security=True;TrustServerCertificate=True" `
             /p:BlockOnPossibleDataLoss=True `
             /p:DropObjectsNotInSource=False
