@@ -24,9 +24,9 @@ jobs:
       - name: Environment check
         if: always()
         run: |
-          echo "ENV_NAME  ${{ inputs.environment }}..."
-          echo "DB_SERVER ${{ vars.DB_SERVER }}..."
-          echo "DB_NAME   ${{ vars.DB_NAME }}..."
+          echo "ENV_NAME  ${{ inputs.environment }}"
+          echo "DB_SERVER ${{ vars.DB_SERVER }}"
+          echo "DB_NAME   ${{ vars.DB_NAME }}"
 
 
       # - name: Setup MSBuild
@@ -36,7 +36,12 @@ jobs:
         if: inputs.action_type == 'build_template'
         working-directory: Nexus
         run: |
-          msbuild /t:Build /p:Configuration=Release Nexus.sqlproj
+          msbuild `
+          /t:Build `
+          /p:Configuration=Release Nexus.sqlproj `
+          /fileLogger `
+          /fileLoggerParameters:LogFile=build.log;Verbosity=normal
+
       
       - name: Upload dacpac
         if: inputs.action_type == 'build_template'
@@ -69,8 +74,11 @@ jobs:
                 /Action:Publish `
                 /SourceFile:"bin\Release\Nexus.dacpac" `
                 /TargetConnectionString:"Server=${{ vars.DB_SERVER }};Database=${{ vars.DB_NAME }};Integrated Security=True;TrustServerCertificate=True" `
+                /Diagnostics:True `
+                /DiagnosticsFile:"publish.log" `
                 /p:BlockOnPossibleDataLoss=True `
                 /p:DropObjectsNotInSource=False
+                }
             catch {
                 Write-Host "ERROR OCCURRED"
                 throw 
