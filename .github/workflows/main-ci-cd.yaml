@@ -17,7 +17,7 @@ jobs:
   # Деплой на TEST запускается автоматически после успешного DEV d
   deploy-test:
     needs: deploy-dev
-    uses: ./.github/workflows/deployment-template.yml
+    uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: qa
     secrets: inherit
@@ -25,7 +25,7 @@ jobs:
   # Деплой на PROD запускается только при создании тега (релиза)
   # deploy-prod:
     # if: startsWith(github.ref, 'refs/tags/')
-    # uses: ./.github/workflows/deployment-template.yml
+    # uses: ./.github/workflows/deployment-template.yaml
     # with:
       # environment: production
     # secrets: inherit
