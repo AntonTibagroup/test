@@ -40,7 +40,7 @@ jobs:
           /t:Build `
           /p:Configuration=Release Nexus.sqlproj `
           /fileLogger `
-          /fileLoggerParameters:LogFile=build.log;Verbosity=normal
+          "/fileLoggerParameters:LogFile=build.log;Verbosity=normal"
 
       
       - name: Upload dacpac
