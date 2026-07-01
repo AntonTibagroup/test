@@ -10,6 +10,7 @@ jobs:
     #if: github.event_name == 'push' && github.ref_name == 'new'
     uses: ./.github/workflows/deployment-template.yaml
     with:
+      environment: dev
       action_type: "build_template"
     secrets: inherit
   # deploy-dev on push in main
