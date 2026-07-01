@@ -69,21 +69,16 @@ jobs:
                 Write-Error "SqlPackage not found"
                 exit 1
             }
-            try {
-                & $sqlpackage `
-                /Action:Publish `
-                /SourceFile:"bin\Release\Nexus.dacpac" `
-                /TargetConnectionString:"Server=${{ vars.DB_SERVER }};Database=${{ vars.DB_NAME }};Integrated Security=True;TrustServerCertificate=True" `
-                /DiagnosticsFile:"bin\Release\publish.log" `
-                /p:BlockOnPossibleDataLoss=True `
-                /p:DropObjectsNotInSource=False
-                }
-            catch {
-                Write-Host "ERROR OCCURRED"
-                throw 
+            
+            & $sqlpackage `
+            /Action:Publish `
+            /SourceFile:"bin\Release\Nexus.dacpac" `
+            /TargetConnectionString:"Server=${{ vars.DB_SERVER }};Database=${{ vars.DB_NAME }};Integrated Security=True;TrustServerCertificate=True" `
+            /DiagnosticsFile:"bin\Release\publish.log" `
+            /p:BlockOnPossibleDataLoss=True `
+            /p:DropObjectsNotInSource=False
             }
 
-      
       - name: Debug artifacts
         if: always()
         run: dir Nexus\bin\Release
