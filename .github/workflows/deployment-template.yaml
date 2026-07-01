@@ -18,9 +18,11 @@ jobs:
 
     steps:
       - name: Checkout code
+        if: inputs.action_type == 'build_template'
         uses: actions/checkout@v4
 
       - name: Environment check
+        if: inputs.action_type == 'build_template'
         run: echo "Building for ${{ inputs.environment }}..."
 
       # - name: Setup MSBuild
