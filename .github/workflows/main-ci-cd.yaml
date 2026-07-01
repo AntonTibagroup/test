@@ -16,7 +16,7 @@ jobs:
     secrets: inherit
   # deploy-dev on push in main
   deploy-dev:
-    name: Local
+    needs: build-template
     uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: dev
