@@ -39,6 +39,7 @@ jobs:
           number: ${{ github.event.pull_request.number }}
           header: ssdt-status
           message: "### ✅  SSDT validation passed!"
+          
 
       - name: Post Failure Comment
         if: needs.build-template.result != 'success'
@@ -46,7 +47,10 @@ jobs:
         with:
           number: ${{ github.event.pull_request.number }}
           header: ssdt-status
-          message: "### ❌ SSDT validation failed. Merge rejected"
+          message: |
+            ### ❌ SSDT validation failed. Merge rejected
+            🔗 [Open pipeline](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
     
     
   # deploy-dev on push in main
@@ -61,7 +65,7 @@ jobs:
   # Деплой на TEST запускается автоматически после успешного DEV d
   deploy-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: deploy-dev
+    #needs: deploy-dev
     uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: qa
@@ -71,7 +75,7 @@ jobs:
    # Деплой на TEST запускается автоматически после успешного DEV d
   deploy-staging:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: deploy-dev
+    #needs: deploy-dev
     uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: staging
