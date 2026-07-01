@@ -40,7 +40,7 @@ jobs:
           /t:Build `
           /p:Configuration=Release Nexus.sqlproj `
           /fileLogger `
-          "/fileLoggerParameters:LogFile=build.log;Verbosity=normal"
+          "/fileLoggerParameters:LogFile=bin\Release\build.log;Verbosity=minimal"
 
       
       - name: Upload dacpac
@@ -74,8 +74,7 @@ jobs:
                 /Action:Publish `
                 /SourceFile:"bin\Release\Nexus.dacpac" `
                 /TargetConnectionString:"Server=${{ vars.DB_SERVER }};Database=${{ vars.DB_NAME }};Integrated Security=True;TrustServerCertificate=True" `
-                /Diagnostics:True `
-                /DiagnosticsFile:"publish.log" `
+                /DiagnosticsFile:"bin\Release\publish.log" `
                 /p:BlockOnPossibleDataLoss=True `
                 /p:DropObjectsNotInSource=False
                 }
