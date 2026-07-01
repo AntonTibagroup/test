@@ -22,8 +22,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Environment check
-        if: inputs.action_type == 'build_template'
-        run: echo "Building for ${{ inputs.environment }}..."
+        if: always()
+        run: |
+          echo "ENV_NAME  ${{ inputs.environment }}..."
+          echo "DB_SERVER ${{ vars.DB_SERVER }}..."
+          echo "DB_NAME   ${{ vars.DB_NAME }}..."
+
 
       # - name: Setup MSBuild
         # uses: microsoft/setup-msbuild@v2
@@ -60,9 +64,25 @@ jobs:
                 Write-Error "SqlPackage not found"
                 exit 1
             }
-            & $sqlpackage `
-            /Action:Publish `
-            /SourceFile:"bin\Release\Nexus.dacpac" `
-            /TargetConnectionString:"Server=${{ vars.DB_SERVER }};Database=${{ vars.DB_NAME }};Integrated Security=True;TrustServerCertificate=True" `
-            /p:BlockOnPossibleDataLoss=True `
-            /p:DropObjectsNotInSource=False
+            try {
+                & $sqlpackage `
+                /Action:Publish `
+                /SourceFile:"bin\Release\Nexus.dacpac" `
+                /TargetConnectionString:"Server=${{ vars.DB_SERVER }};Database=${{ vars.DB_NAME }};Integrated Security=True;TrustServerCertificate=True" `
+                /p:BlockOnPossibleDataLoss=True `
+                /p:DropObjectsNotInSource=False
+            catch {
+                Write-Host "ERROR OCCURRED"
+                throw
+            }
+
+      
+      - name: Debug artifacts
+        if: always()
+        run: dir Nexus\bin\Release
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: debug
+          path: Nexus/bin/Release

@@ -29,7 +29,16 @@ jobs:
     uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: qa
-      action_type: qa_deploy
+      action_type: qa_deploy-
+    secrets: inherit
+    
+   # Деплой на TEST запускается автоматически после успешного DEV d
+  deploy-staging:
+    needs: deploy-dev
+    uses: ./.github/workflows/deployment-template.yaml
+    with:
+      environment: staging
+      action_type: staging_deploy
     secrets: inherit
 
   # Деплой на PROD запускается только при создании тега (релиза)
