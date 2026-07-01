@@ -23,8 +23,8 @@ jobs:
       - name: Environment check
         run: echo "Building for ${{ inputs.environment }}..."
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+      # - name: Setup MSBuild
+        # uses: microsoft/setup-msbuild@v2
 
       - name: Build SSDT Project (.sqlproj)
         run: |
