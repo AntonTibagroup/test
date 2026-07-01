@@ -6,7 +6,7 @@ USING (
 	
 		
 		
-		('ASM', 'American Samoa', 'AS'),
+		
 		('AND', 'Andorra', 'AD'),
 		('AGO', 'Angola', 'AO'),
 		
