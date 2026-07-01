@@ -5,7 +5,7 @@ USING (
 		('USA', 'United States of America', 'US'),
 	
 		
-		('DZA', 'Algeria', 'DZ'),
+		
 		('ASM', 'American Samoa', 'AS'),
 		('AND', 'Andorra', 'AD'),
 		('AGO', 'Angola', 'AO'),

@@ -1,4 +1,4 @@
-name: Shared Deployment Target
+name: Deployment Template
 
 on:
   workflow_call:
@@ -6,22 +6,39 @@ on:
       environment:
         required: true
         type: string
+      action_type:
+        required: true
+        type: string
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    # Связываем джобу с конкретным окружением в GitHub Settings
+    runs-on: self-hosted
+
     environment: ${{ inputs.environment }}
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Docker Image
-        run: echo "Building image for ${{ inputs.environment }}..."
+      - name: Environment check
+        run: echo "Building for ${{ inputs.environment }}..."
 
-      - name: Deploy to Server
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build SSDT Project (.sqlproj)
         run: |
-          echo "Connecting to database..."
-          # GitHub автоматически подставит секрет из настроек выбранного окружения
-          echo "Using connection string: ${{ secrets.DATABASE_URL }}"
+          msbuild /t:Build /p:Configuration=Release Nexus.sqlproj
+
+      - name: Publish dacpac structure to Remote Template DB
+        shell: pwsh
+        run: |
+          SqlPackage `
+            /Action:Publish `
+            /SourceFile:"bin\Release\Nexus.dacpac" `
+            /TargetServerName:"${{ vars.DB_SERVER }}" `
+            /TargetDatabaseName:"${{ vars.DB_NAME }}" `
+            /TargetTrustedConnection:True `
+            /p:AllowDropBlockingDatabaseObjects=True `
+            /p:BlockOnPossibleDataLoss=True `
+            /p:DropObjectsNotInSource=False
