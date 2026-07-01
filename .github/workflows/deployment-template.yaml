@@ -77,14 +77,13 @@ jobs:
             /DiagnosticsFile:"bin\Release\publish.log" `
             /p:BlockOnPossibleDataLoss=True `
             /p:DropObjectsNotInSource=False
-            }
+            
 
       - name: Debug artifacts
         if: always()
         run: dir Nexus\bin\Release
-
-      - uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: debug
-          path: Nexus/bin/Release
+          path: Nexus/bin/Release/*.log
