@@ -42,14 +42,16 @@ jobs:
           path: Nexus/bin/Release/Nexus.dacpac
             
       - name: Download dacpac
-        if: contains(fromJSON('["dev_deploy","deploy"]'), inputs.action_type)
+        #if: contains(fromJSON('["dev_deploy","qa_deploy"]'), inputs.action_type)
+        if: endsWith(inputs.action_type, '_deploy')
         uses: actions/download-artifact@v4
         with:
           name: dacpac
           path: Nexus/bin/Release
 
       - name: Publish dacpac structure to Remote DB
-        if: contains(fromJSON('["dev_deploy","deploy"]'), inputs.action_type)
+        #if: contains(fromJSON('["dev_deploy","qa_deploy"]'), inputs.action_type)
+        if: endsWith(inputs.action_type, '_deploy')
         working-directory: Nexus
         shell: pwsh
         run: |
