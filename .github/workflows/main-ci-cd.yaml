@@ -57,11 +57,34 @@ jobs:
       environment: dev
       action_type: dev_deploy
     secrets: inherit # Передает секреты в reusable workflow
+    
+  comment-pr:
+    needs: build-template
+    if: github.event_name == 'pull_request' && always()
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Post Success Comment
+        if: needs.build-template.result == 'success'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          number: ${{ github.event.pull_request.number }}
+          header: ssdt-status
+          message: "### ✅  SSDT validation passed!"
+
+      - name: Post Failure Comment
+        if: needs.build-template.result != 'success'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          number: ${{ github.event.pull_request.number }}
+          header: ssdt-status
+          message: "### ❌ SSDT validation failed. Merge rejected"
 
   # Деплой на TEST запускается автоматически после успешного DEV d
   deploy-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: deploy-dev
+    #needs: deploy-dev
     uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: qa
@@ -71,7 +94,7 @@ jobs:
    # Деплой на TEST запускается автоматически после успешного DEV d
   deploy-staging:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: deploy-dev
+    #needs: deploy-dev
     uses: ./.github/workflows/deployment-template.yaml
     with:
       environment: staging
